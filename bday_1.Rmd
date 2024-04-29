@@ -1,0 +1,218 @@
+```{r}
+#install.packages("readxl")
+library(readxl)
+```
+
+```{r}
+# Assuming your Excel file has a sheet named "Sheet1" and the birthdays are in column A
+birthdays_data <- read_excel( "Winnipeg_jets.xlsx", 
+                              sheet = "Winnipeg Jetts", 
+                              col_names = TRUE )
+birthdays_data
+```
+
+# extract team names
+```{r}
+# Specify the path to your Excel file
+excel_file <- "Winnipeg_jets.xlsx"
+
+# Get the names of all sheets in the Excel file
+all_sheets <- excel_sheets(excel_file)
+
+# Loop through each sheet and print its name
+for (sheet_name in all_sheets) {
+  print(sheet_name)
+  # Add your code here to perform tasks for each sheet
+}
+
+```
+
+
+```{r}
+library(ggplot2)
+
+# Read the Excel file
+birthdays_data <- read_excel( "Winnipeg_jets.xlsx", 
+                              sheet = 'Winnipeg Jetts', 
+                              col_names = FALSE )
+
+# Check the structure of the data frame
+str( birthdays_data )
+
+# extract the first column of the df
+birthdays <- as.Date( birthdays_data$`...1`)
+print(birthdays)
+
+# extract date only
+day_month <- format( birthdays, '%m-%d' )
+#day_month
+
+data <- data.frame( day_month )
+
+ggplot(data, aes(x = day_month)) +
+      geom_bar(color = "black", 
+               fill = "lightblue") +
+      labs(x = "Date (Month-Day)", 
+           y = "Frequency", 
+           title = "Distribution of Birthdays (Month-Day)")
+```
+
+
+```{r}
+# Loop through each sheet
+file_path <- "Winnipeg_jets.xlsx"
+
+# Get the names of all sheets in the Excel file
+all_sheets <- excel_sheets(excel_file)
+
+# Loop through each sheet and print its name
+for (sheet_name in all_sheets) {
+  print(sheet_name)
+  # Add your code here to perform tasks for each sheet
+}
+
+# Get the names of all sheets in the Excel file
+all_sheets <- excel_sheets(excel_file)
+print(all_sheets)
+
+for (sheet_name in all_sheets) {
+    # Load data from the current sheet
+      sheet_data <- read_excel(file_path, sheet = sheet_name, col_names = FALSE)
+    
+      print(sheet_data)
+    #str( birthdays_data )
+
+# extract the first column of the df
+      birthdays <- as.Date( birthdays_data$`...1`)
+      
+# extract date only
+      day_month <- format( birthdays, '%m-%d' )
+
+}
+
+```
+
+```{r}
+# Loop through each sheet
+file_path <- "Winnipeg_jets.xlsx"
+
+# Get the names of all sheets in the Excel file
+all_sheets <- excel_sheets(excel_file)
+
+# Loop through each sheet and print its name
+for (sheet_name in all_sheets) {
+  print(sheet_name)
+  # Add your code here to perform tasks for each sheet
+}
+
+# Get the names of all sheets in the Excel file
+all_sheets <- excel_sheets(excel_file)
+print(all_sheets)
+
+for (sheet_name in all_sheets) {
+    # Load data from the current sheet
+      sheet_data <- read_excel(file_path, sheet = sheet_name, col_names = FALSE)
+    
+      print(sheet_data)
+    #str( birthdays_data )
+
+# extract the first column of the df
+      birthdays <- as.Date( birthdays_data$`...1`)
+      
+# extract date only
+      day_month <- format( birthdays, '%m-%d' )
+      
+      data <- data.frame( day_month )
+
+      p <- ggplot(data, aes(x = day_month)) +
+            geom_bar(color = "black", 
+               fill = "lightblue") +
+            labs(x = "Date (Month-Day)", 
+                  y = "Frequency", 
+                  title = "Distribution of Birthdays (Month-Day)")
+      print(p)
+
+}
+
+```
+
+
+```{r}
+library(ggplot2)
+
+# Read the Excel file
+birthdays_data <- read_excel( "Winnipeg_jets.xlsx", 
+                              sheet = 'Winnipeg Jetts', 
+                              col_names = FALSE )
+
+# Check the structure of the data frame
+str( birthdays_data )
+
+# extract the first column of the df
+birthdays <- as.Date( birthdays_data$`...1`)
+
+# extract date only
+day_month <- format( birthdays, '%m-%d' )
+#day_month
+
+data <- data.frame( day_month )
+
+ggplot(data, aes(x = day_month)) +
+      geom_bar(color = "black", 
+               fill = "lightblue") +
+      labs(x = "Date (Month-Day)", 
+           y = "Frequency", 
+           title = "Distribution of Birthdays (Month-Day)")
+```
+
+
+```{r}
+str(birthdays_data)
+hist(birthdays, breaks = "years", xlab = "Date", main = "Distribution of Birthdays")
+```
+
+```{r}
+hist(day_month, breaks = "years", xlab = "Date", main = "Distribution of Birthdays")
+
+```
+
+
+```{r}
+# Sample data
+birthdays <- c("1990-01-15", "1985-04-20", "1995-09-10", "1980-11-25", "1992-03-07", "1988-06-30", "1998-12-12")
+birthdays <- as.Date(birthdays)
+
+# Get the range of years
+from_year <- min(format(birthdays, "%Y"))
+to_year <- max(format(birthdays, "%Y"))
+
+# Create a sequence of years
+years_seq <- seq(from = as.numeric(from_year), to = as.numeric(to_year), by = 1)
+
+# Create a table of frequencies
+freq_table <- table(format(birthdays, "%Y"))
+
+# Fill in missing years with frequency 0
+freq_table <- as.data.frame(freq_table)
+names(freq_table) <- c("Year", "Frequency")
+freq_table <- merge(data.frame(Year = years_seq), freq_table, by = "Year", all.x = TRUE)
+freq_table[is.na(freq_table)] <- 0
+
+# Create a line plot
+plot(freq_table$Year, freq_table$Frequency, type = "o", xlab = "Year", ylab = "Frequency", main = "Birthdays by Year")
+
+```
+
+```{r}
+library(ggplot2)
+
+# Sample data (replace this with your actual data)
+birthdays <- as.Date(c("1990-01-15", "1985-04-20", "1995-09-10", "1980-11-25", "1992-03-07", "1988-06-30", "1998-12-12"))
+
+# Create a histogram
+ggplot(data.frame(birthdays), aes(x = birthdays)) +
+  geom_histogram(binwidth = 1, color = "black", fill = "lightblue") +
+  labs(x = "Date", y = "Frequency", title = "Distribution of Birthdays")
+
+```
+
