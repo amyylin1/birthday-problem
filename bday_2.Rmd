@@ -55,13 +55,6 @@ day_month <- format( birthdays, '%m-%d' )
 
 data <- data.frame( day_month )
 
-#ggplot(data, aes(x = day_month)) +
- #     geom_bar(color = "black", 
-  #             fill = "lightblue") +
-   #   labs(x = "Date (Month-Day)", 
-    #       y = "Frequency", 
-     #      title = "Distribution of Birthdays (Month-Day)") +
-      
       # Plot the data
 p <- ggplot(data, aes(x = day_month)) +
   geom_bar(color = "black", fill = "lightblue") +
@@ -112,102 +105,6 @@ for (sheet_name in all_sheets) {
 }
 
 ```
-
-```{r}
-library(ggplot2)
-library(readxl)
-
-file_path <- "Winnipeg_jets.xlsx"
-
-# Create a folder named "plots" if it doesn't exist
-if (!file.exists("plots")) {
-  dir.create("plots")
-}
-
-# Initialize a variable to store the maximum frequency
-max_frequency <- 0
-
-for (sheet_name in all_sheets) {
-      
-    # Load data from the current sheet
-    sheet_data <- read_excel(file_path, sheet = sheet_name, col_names = FALSE)
-    
-    # Extract the first column of the df
-    birthdays <- as.Date(sheet_data$`...1`)
-      
-    # Extract date only
-    day_month <- format(birthdays, '%m-%d')
-    data <- data.frame(day_month)
-    
-    # Count the frequency of each date
-    freq_table <- table(day_month)
-    
-    # Update the maximum frequency if needed
-    max_frequency <- max(max_frequency, max(freq_table))
-    
-    # Create the plot
-    p <- ggplot(data, aes(x = day_month)) +
-            geom_bar(color = "black", fill = "lightblue") +
-            labs(x = "Date (Month-Day)", 
-                 y = "Frequency", 
-                 title = paste("Distribution of Birthdays (Month-Day) -", sheet_name)) +
-            scale_y_continuous(limits = c(0, max_frequency)) +  # Set y-axis limits
-            theme(axis.title.x = element_text(size = 12),
-                  axis.text.x = element_text(size = 8),  # Set x-axis tick label size
-                  axis.title.y = element_text(size = 12),
-                  axis.text.y = element_text(size = 10))
-
-    # Save the plot as an image file in the "plots" folder
-    ggsave(filename = paste0("plots/", sheet_name, "_plot.png"), plot = p, width = 8, height = 6, units = "in")
-}
-
-```
-
-```{r}
-library(ggplot2)
-library(readxl)
-
-file_path <- "Winnipeg_jets.xlsx"
-
-# Initialize a variable to store the maximum frequency
-max_frequency <- 0
-
-for (sheet_name in all_sheets) {
-      
-    # Load data from the current sheet
-    sheet_data <- read_excel(file_path, sheet = sheet_name, col_names = FALSE)
-    
-    # Extract the first column of the df
-    birthdays <- as.Date(sheet_data$`...1`)
-      
-    # Extract date only
-    day_month <- format(birthdays, '%m-%d')
-    data <- data.frame(day_month)
-    
-    # Count the frequency of each date
-    freq_table <- table(day_month)
-    
-    # Update the maximum frequency if needed
-    max_frequency <- max(max_frequency, max(freq_table))
-    
-    # Create the plot
-    p <- ggplot(data, aes(x = day_month)) +
-            geom_bar(color = "black", fill = "lightblue") +
-            labs(x = "Date (Month-Day)", 
-                 y = "Frequency", 
-                 title = paste("Distribution of Birthdays (Month-Day) -", sheet_name)) +
-            scale_y_continuous(limits = c(0, max_frequency)) +  # Set y-axis limits
-            theme(axis.title.x = element_text(size = 12),
-                  axis.text.x = element_text(size = 8),  # Set x-axis tick label size
-                  axis.title.y = element_text(size = 12),
-                  axis.text.y = element_text(size = 10))
-
-    # Save the plot as an image file (PNG format in this example)
-    ggsave(filename = paste0(sheet_name, "_plot.png"), plot = p, width = 8, height = 6, units = "in")
-}
-
-```
-
 
 ```{r}
 library(ggplot2)
@@ -271,186 +168,206 @@ for (sheet_name in all_sheets) {
 library(ggplot2)
 library(readxl)
 
-file_path <- "Winnipeg_jets.xlsx"
+# Specify the path to your Excel file
+excel_file <- "Winnipeg_jets.xlsx"
+
+# Get the names of all sheets in the Excel file
+all_sheets <- excel_sheets(excel_file)
+
+# Create a folder named "plots" if it doesn't exist
+if (!file.exists("plots")) {
+  dir.create("plots")
+}
 
 # Initialize a variable to store the maximum frequency
 max_frequency <- 0
 
+# Iterate over sheets to create plots
 for (sheet_name in all_sheets) {
-      
-    # Load data from the current sheet
-    sheet_data <- read_excel(file_path, sheet = sheet_name, col_names = FALSE)
-    
-    # Extract the first column of the df
-    birthdays <- as.Date(sheet_data$`...1`)
-      
-    # Extract date only
-    day_month <- format(birthdays, '%m-%d')
-    data <- data.frame(day_month)
-    
-    # Count the frequency of each date
-    freq_table <- table(day_month)
-    
-    # Update the maximum frequency if needed
-    max_frequency <- max(max_frequency, max(freq_table))
-}
-
-# Iterate over sheets again to create plots with the same y-axis scale
-for (sheet_name in all_sheets) {
-      
-    # Load data from the current sheet
-    sheet_data <- read_excel(file_path, sheet = sheet_name, col_names = FALSE)
-    
-    # Extract the first column of the df
-    birthdays <- as.Date(sheet_data$`...1`)
-      
-    # Extract date only
-    day_month <- format(birthdays, '%m-%d')
-    data <- data.frame(day_month)
-    
-    # Create the plot
-    p <- ggplot(data, aes(x = day_month)) +
-            geom_bar(color = "black", fill = "lightblue") +
-            labs(x = "Date (Month-Day)", 
-                 y = "Frequency", 
-                 title = paste("Distribution of Birthdays (Month-Day) -", sheet_name)) +
-            scale_y_continuous(limits = c(0, max_frequency)) +  # Set y-axis limits
-            theme(axis.title.x = element_text(size = 12),
-                  axis.text.x = element_text(size = 10),
-                  axis.title.y = element_text(size = 12),
-                  axis.text.y = element_text(size = 10))
-
-    print(p)
+  
+  # Load data from the current sheet
+  sheet_data <- read_excel(excel_file, sheet = sheet_name, col_names = FALSE)
+  
+  # Extract the first column of the df
+  birthdays <- as.Date(sheet_data$`...1`)
+  
+  # Extract date only
+  day_month <- format(birthdays, '%m-%d')
+  data <- data.frame(day_month)
+  
+  # Count the frequency of each date
+  freq_table <- table(day_month)
+  
+  # Update the maximum frequency if needed
+  max_frequency <- max(max_frequency, max(freq_table))
+  
+  # Create the plot
+  p <- ggplot(data, aes(x = day_month)) +
+    geom_bar(color = "black", fill = "lightblue") +
+    labs(x = "Date (Month-Day)", 
+         y = "Frequency", 
+         title = paste("Distribution of Birthdays (Month-Day) -", sheet_name)) +
+    scale_y_continuous(limits = c(0, max_frequency)) +  # Set y-axis limits
+    theme(axis.title.x = element_text(size = 12),
+          axis.text.x = element_text(size = 8),  # Set x-axis tick label size
+          axis.title.y = element_text(size = 12),
+          axis.text.y = element_text(size = 10))
+  
+  # Save the plot as an image file in the "plots" folder
+  ggsave(filename = paste0("plots/", sheet_name, "_plot.png"), plot = p, width = 8, height = 6, units = "in")
 }
 
 ```
 
-## 5. graph all
-
-```{r}
-
-file_path <- "Winnipeg_jets.xlsx"
-
-for (sheet_name in all_sheets) {
-      
-    # Load data from the current sheet
-      sheet_data <- read_excel(file_path, sheet = sheet_name, col_names = FALSE)
-    
-      #print(sheet_data)
-      str( sheet_data )
-
-      # extract the first column of the df
-      birthdays <- as.Date( sheet_data$`...1`)
-      
-      # extract date only
-      day_month <- format( birthdays, '%m-%d' )
-      data <- data.frame( day_month )
-      
-      # data
-      p <- ggplot(data, aes(x = day_month)) +
-            geom_bar(color = "black", fill = "lightblue") 
-            labs(x = "Date (Month-Day)", 
-                 y = "Frequency", 
-                 title = paste("Distribution of Birthdays (Month-Day) -", sheet_name)) +
-                  scale_y_discrete(limits = c (0, 2)) +
-                  theme(axis.title.x = element_text(size = 1, margin = margin(t = 100)),
-                   axis.text.x = element_text(size = 0.01) )
-
-      print(p)
-}
-```
-
-
-```{r}
-# Loop through each sheet
-file_path <- "Winnipeg_jets.xlsx"
-
-# Get the names of all sheets in the Excel file
-all_sheets <- excel_sheets(excel_file)
-
-# Loop through each sheet and print its name
-#for (sheet_name in all_sheets) {
-  print(sheet_name)
-  # Add your code here to perform tasks for each sheet
-#}
-
-# Get the names of all sheets in the Excel file
-all_sheets <- excel_sheets(excel_file)
-print(all_sheets)
-
-for (sheet_name in all_sheets) {
-    # Load data from the current sheet
-      sheet_data <- read_excel(file_path, sheet = sheet_name, col_names = FALSE)
-    
-      #print(sheet_data)
-      str( sheet_data )
-    #str( birthdays_data )
-
-# extract the first column of the df
-      birthdays <- as.Date( sheet_data$`...1`)
-      
-# extract date only
-      day_month <- format( birthdays, '%m-%d' )
-      data <- data.frame( day_month )
-      data
-
-      p <- ggplot(data, aes(x = day_month)) +
-            geom_bar(color = "black", 
-               fill = "lightblue") +
-            labs(x = "Date (Month-Day)", 
-           y = "Frequency", 
-           title = "Distribution of Birthdays (Month-Day)")
-      print(p)
-}
-
-```
-
-
-## 7 ?
-
-```{r}
-str(birthdays_data)
-hist(birthdays, breaks = "years", xlab = "Date", main = "Distribution of Birthdays")
-```
-
-
-
-```{r}
-# Sample data
-birthdays <- c("1990-01-15", "1985-04-20", "1995-09-10", "1980-11-25", "1992-03-07", "1988-06-30", "1998-12-12")
-birthdays <- as.Date(birthdays)
-
-# Get the range of years
-from_year <- min(format(birthdays, "%Y"))
-to_year <- max(format(birthdays, "%Y"))
-
-# Create a sequence of years
-years_seq <- seq(from = as.numeric(from_year), to = as.numeric(to_year), by = 1)
-
-# Create a table of frequencies
-freq_table <- table(format(birthdays, "%Y"))
-
-# Fill in missing years with frequency 0
-freq_table <- as.data.frame(freq_table)
-names(freq_table) <- c("Year", "Frequency")
-freq_table <- merge(data.frame(Year = years_seq), freq_table, by = "Year", all.x = TRUE)
-freq_table[is.na(freq_table)] <- 0
-
-# Create a line plot
-plot(freq_table$Year, freq_table$Frequency, type = "o", xlab = "Year", ylab = "Frequency", main = "Birthdays by Year")
-
-```
+# 5. graph all
 
 ```{r}
 library(ggplot2)
+library(readxl)
 
-# Sample data (replace this with your actual data)
-birthdays <- as.Date(c("1990-01-15", "1985-04-20", "1995-09-10", "1980-11-25", "1992-03-07", "1988-06-30", "1998-12-12"))
+# Specify the path to your Excel file
+excel_file <- "Winnipeg_jets.xlsx"
 
-# Create a histogram
-ggplot(data.frame(birthdays), aes(x = birthdays)) +
-  geom_histogram(binwidth = 1, color = "black", fill = "lightblue") +
-  labs(x = "Date", y = "Frequency", title = "Distribution of Birthdays")
+# Get the names of all sheets in the Excel file
+all_sheets <- excel_sheets(excel_file)
+
+# Initialize a variable to store all data
+all_data <- data.frame()
+
+# Iterate over sheets to extract data
+for (sheet_name in all_sheets) {
+  
+  # Load data from the current sheet
+  sheet_data <- read_excel(excel_file, sheet = sheet_name, col_names = FALSE)
+  
+  # Combine data from all sheets
+  all_data <- rbind(all_data, sheet_data)
+}
+
+# Extract the first column of the combined data frame
+birthdays <- as.Date(all_data$`...1`)
+
+# Extract date only
+day_month <- format(birthdays, '%m-%d')
+
+# Count the frequency of each date
+freq_table <- table(day_month)
+
+# Get the maximum frequency
+max_frequency <- max(freq_table)
+
+# Create the plot
+p <- ggplot(data.frame(day_month), aes(x = day_month)) +
+  geom_bar(color = "black", fill = "lightblue") +
+  labs(x = "Date (Month-Day)", 
+       y = "Frequency", 
+       title = "Distribution of Birthdays (Month-Day) - All teams") +
+  scale_y_continuous(limits = c(0, max_frequency)) +  # Set y-axis limits
+  theme(axis.title.x = element_text(size = 12),
+        axis.text.x = element_text(size = 1),  # Set x-axis tick label size
+        axis.title.y = element_text(size = 12),
+        axis.text.y = element_text(size = 10))
+
+ggsave(filename = paste0('plots/', "all.png"), plot = p, width = 8, height = 6, units = "in")
+
+# Print the plot
+print(p)
 
 ```
+
+# 6. freq. > = 2 
+
+```{r}
+library(ggplot2)
+library(readxl)
+
+# Specify the path to your Excel file
+excel_file <- "Winnipeg_jets.xlsx"
+
+# Get the names of all sheets in the Excel file
+all_sheets <- excel_sheets(excel_file)
+
+# Initialize a variable to store all data
+all_data <- data.frame()
+
+# Iterate over sheets to extract data
+for (sheet_name in all_sheets) {
+  
+  # Load data from the current sheet
+  sheet_data <- read_excel(excel_file, sheet = sheet_name, col_names = FALSE)
+  
+  # Combine data from all sheets
+  all_data <- rbind(all_data, sheet_data)
+}
+
+# Extract the first column of the combined data frame
+birthdays <- as.Date(all_data$`...1`)
+
+# Extract date only
+day_month <- format(birthdays, '%m-%d')
+
+# Count the frequency of each date
+freq_table <- table(day_month)
+
+# Filter the frequency table to include only dates that repeat 2 or more times
+freq_table_filtered <- freq_table[freq_table >= 2]
+
+# Get the maximum frequency
+max_frequency <- max(freq_table_filtered)
+
+# Create a data frame for the filtered dates
+filtered_data <- data.frame(day_month = names(freq_table_filtered), freq = as.numeric(freq_table_filtered))
+
+# Create the plot
+two <- ggplot(filtered_data, aes(x = day_month, y = freq)) +
+  geom_bar(stat = "identity", color = "black", fill = "lightblue") +
+  labs(x = "Date (Month-Day)", 
+       y = "Frequency", 
+       title = "Distribution of Birthdays (Month-Day) - Repeated 2 or More Times") +
+  theme(axis.title.x = element_text(size = 12),
+        axis.text.x = element_text(size = 2 ),  # Set x-axis tick label size
+        axis.title.y = element_text(size = 12),
+        axis.text.y = element_text(size = 10))
+
+ggsave(filename = paste0("plots/",  "2.png"), plot = p, width = 8, height = 6, units = "in")
+
+# Print the plot
+print(two)
+
+
+
+```
+
+# 7. freq. >= 3
+
+```{r}
+# Filter the frequency table to include only dates that repeat 2 or more times
+freq_table_filtered <- freq_table[freq_table >= 3]
+
+# Get the maximum frequency
+max_frequency <- max(freq_table_filtered)
+
+# Create a data frame for the filtered dates
+filtered_data <- data.frame(day_month = names(freq_table_filtered), freq = as.numeric(freq_table_filtered))
+
+# Create the plot
+three <- ggplot(filtered_data, aes(x = day_month, y = freq)) +
+  geom_bar(stat = "identity", color = "black", fill = "lightblue") +
+  labs(x = "Date (Month-Day)", 
+       y = "Frequency", 
+       title = "Distribution of Birthdays (Month-Day) - Repeated 2 or More Times") +
+  theme(axis.title.x = element_text(size = 12),
+        axis.text.x = element_text(size = 4 ),  # Set x-axis tick label size
+        axis.title.y = element_text(size = 12),
+        axis.text.y = element_text(size = 10))
+
+ggsave(filename = paste0("plots/",  "3.png"), plot = p, width = 8, height = 6, units = "in")
+
+# Print the plot
+print(three)
+```
+
+
+
+
 
